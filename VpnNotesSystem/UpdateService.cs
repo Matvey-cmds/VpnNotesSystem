@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace VpnNotesSystem
 {
-    internal class Program
+    internal class UpdateService
     {
-        static void Main(string[] args)
+        public async Task CheckForUpdates()
         {
-            var handler = new CommandHandler();
-            handler.Handle(args);
         }
     }
 }

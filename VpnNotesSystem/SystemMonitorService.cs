@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace VpnNotesSystem
 {
-    internal class Program
+    internal class SystemMonitorService
     {
-        static void Main(string[] args)
+        public void PrintStats()
         {
-            var handler = new CommandHandler();
-            handler.Handle(args);
         }
     }
 }

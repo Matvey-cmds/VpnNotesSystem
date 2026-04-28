@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace VpnNotesSystem
 {
-    internal class Program
+    internal class NoteService
     {
-        static void Main(string[] args)
+        public void AddNote(string text)
         {
-            var handler = new CommandHandler();
-            handler.Handle(args);
         }
     }
 }

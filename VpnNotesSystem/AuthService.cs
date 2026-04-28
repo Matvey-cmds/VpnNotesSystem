@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace VpnNotesSystem
 {
-    internal class Program
+    internal class AuthService
     {
-        static void Main(string[] args)
+        public bool Login(string username, string password)
         {
-            var handler = new CommandHandler();
-            handler.Handle(args);
+            return false;
         }
     }
 }
