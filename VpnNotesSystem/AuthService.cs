@@ -22,9 +22,16 @@ namespace VpnNotesSystem
             if (user == null)
                 return false;
 
+            if (user.IsBlocked)
+            {
+                Console.WriteLine("Пользователь заблокирован");
+                return false;
+            }
+
             if (user.Password == password)
             {
                 UserSession.CurrentUser = username;
+                UserSession.CurrentRole = user.Role;
                 return true;
             }
 

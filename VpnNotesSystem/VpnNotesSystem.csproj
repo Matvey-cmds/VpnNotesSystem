@@ -104,6 +104,7 @@
     <Compile Include="SystemMonitorService.cs" />
     <Compile Include="UpdateService.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="UserService.cs" />
     <Compile Include="UserSession.cs" />
   </ItemGroup>
   <ItemGroup>

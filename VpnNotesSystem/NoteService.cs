@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VpnNotesSystem
 {
-    internal class NoteService
+    public class NoteService
     {
         private readonly INoteRepository _noteRepository;
 
@@ -18,6 +18,14 @@ namespace VpnNotesSystem
         public void AddNote(string username, string text)
         {
             _noteRepository.AddNote(username, text);
+        }
+        public List<Note> GetUserNotes(string username)
+        {
+            return _noteRepository.GetUserNotes(username);
+        }
+        public List<Note> GetAllNotes()
+        {
+            return _noteRepository.GetAllNotes();
         }
     }
 }

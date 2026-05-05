@@ -34,13 +34,29 @@ namespace VpnNotesSystem
                             return new User
                             {
                                 Username = reader.GetString(0),
-                                Password = reader.GetString(1)
+                                Password = reader.GetString(1),
+                                Role = reader.GetString(2),
+                                IsBlocked = reader.GetBoolean(3)
                             };
                         }
                     }
                 }
             }
             return null;
+        }
+        public void BlockUser(string username)
+        {
+            using (var conn = new NpgsqlConnection(_connectionString))
+            {
+                conn.Open();
+
+                using (var cmd = new NpgsqlCommand(
+                    "SELECT block_user(@username)", conn))
+                {
+                    cmd.Parameters.AddWithValue("username", username);
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

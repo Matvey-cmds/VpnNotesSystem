@@ -10,9 +10,12 @@ namespace VpnNotesSystem
     {
         public string Username { get; set; }
         public string Password { get; set; }
+        public string Role { get; set; }
+        public bool IsBlocked { get; set; }
     }
     public interface IUserRepository
     {
         User GetByUsername(string username);
+        void BlockUser(string username);
     }
 }

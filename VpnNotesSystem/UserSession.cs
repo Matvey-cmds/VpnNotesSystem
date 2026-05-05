@@ -9,5 +9,6 @@ namespace VpnNotesSystem
     public static class UserSession
     {
         public static string CurrentUser { get; set; }
+        public static string CurrentRole { get; set; }
     }
 }

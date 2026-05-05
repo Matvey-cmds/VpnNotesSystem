@@ -14,11 +14,10 @@ namespace VpnNotesSystem
 
             IUserRepository userRepo = new PostgresUserRepository(connectionString);
             INoteRepository noteRepo = new PostgresNoteRepository(connectionString);
-
             AuthService authService = new AuthService(userRepo);
             NoteService noteService = new NoteService(noteRepo);
-
-            CommandHandler handler = new CommandHandler(authService, noteService);
+            UserService userService = new UserService(userRepo);
+            CommandHandler handler = new CommandHandler(authService, noteService, userService);
 
             handler.Run();
         }

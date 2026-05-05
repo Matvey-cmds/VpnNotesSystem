@@ -31,5 +31,63 @@ namespace VpnNotesSystem
                 }
             }
         }
+        public List<Note> GetUserNotes(string username)
+        {
+            var notes = new List<Note>();
+
+            using (var conn = new NpgsqlConnection(_connectionString))
+            {
+                conn.Open();
+
+                using (var cmd = new NpgsqlCommand(
+                    "SELECT * FROM get_notes_by_user(@username)", conn))
+                {
+                    cmd.Parameters.AddWithValue("username", username);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            notes.Add(new Note
+                            {
+                                Text = reader.GetString(0),
+                                CreatedAt = reader.GetDateTime(1)
+                            });
+                        }
+                    }
+                }
+            }
+
+            return notes;
+        }
+        public List<Note> GetAllNotes()
+        {
+            var notes = new List<Note>();
+
+            using (var conn = new NpgsqlConnection(_connectionString))
+            {
+                conn.Open();
+
+                using (var cmd = new NpgsqlCommand(
+                    "SELECT * FROM get_all_notes()", conn))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            notes.Add(new Note
+                            {
+                                Username = reader.GetString(0),
+                                Text = reader.GetString(1),
+                                CreatedAt = reader.GetDateTime(2)
+                            });
+                        }
+                    }
+                }
+            }
+
+            return notes;
+        } 
+
     }
 }
