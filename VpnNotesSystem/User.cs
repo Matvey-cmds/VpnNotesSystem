@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace VpnNotesSystem
 {
-    internal class User
+    public class User
     {
         public string Username { get; set; }
         public string Password { get; set; }
+    }
+    public interface IUserRepository
+    {
+        User GetByUsername(string username);
     }
 }

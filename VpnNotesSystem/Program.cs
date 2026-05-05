@@ -10,7 +10,12 @@ namespace VpnNotesSystem
     {
         static void Main(string[] args)
         {
-            var handler = new CommandHandler();
+            string connectionString = "Host=localhost;Port=5432;Username=postgres;Password=111;Database=postgres";
+
+            IUserRepository userRepo = new PostgresUserRepository(connectionString);
+            AuthService authService = new AuthService(userRepo);
+            CommandHandler handler = new CommandHandler(authService);
+
             handler.Handle(args);
         }
     }

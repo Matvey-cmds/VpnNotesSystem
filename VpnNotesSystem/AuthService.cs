@@ -8,9 +8,21 @@ namespace VpnNotesSystem
 {
     internal class AuthService
     {
+        private readonly IUserRepository _userRepository;
+
+        public AuthService(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         public bool Login(string username, string password)
         {
-            return false;
+            var user = _userRepository.GetByUsername(username);
+
+            if (user == null)
+                return false;
+
+            return user.Password == password;
         }
     }
 }
