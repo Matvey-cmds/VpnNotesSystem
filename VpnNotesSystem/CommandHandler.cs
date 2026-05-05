@@ -9,29 +9,50 @@ namespace VpnNotesSystem
     internal class CommandHandler
     {
         private readonly AuthService _authService;
+        private readonly NoteService _noteService;
 
-        public CommandHandler(AuthService authService)
+        public CommandHandler(AuthService authService, NoteService noteService)
         {
             _authService = authService;
+            _noteService = noteService;
         }
 
-        public void Handle(string[] args)
+        public void Run()
         {
-            // 👉 если аргументов нет — обычный вход
-            if (args.Length == 0)
-            {
-                RunInteractiveLogin();
-                return;
-            }
+            Console.WriteLine("Система заметок запущена");
+            Console.WriteLine("Введите команду (--help для списка)");
 
-            // 👉 если есть аргументы — CLI режим
+            while (true)
+            {
+                Console.Write("> ");
+                string input = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(input))
+                    continue;
+
+                string[] args = input.Split(' ');
+
+                HandleCommand(args);
+            }
+        }
+
+        private void HandleCommand(string[] args)
+        {
             if (args[0] == "--login")
             {
-                RunInteractiveLogin();
+                RunLogin();
+            }
+            else if (args[0] == "--addNewNote")
+            {
+                AddNote(args);
             }
             else if (args[0] == "--help")
             {
                 ShowHelp();
+            }
+            else if (args[0] == "--exit")
+            {
+                Environment.Exit(0);
             }
             else
             {
@@ -39,7 +60,7 @@ namespace VpnNotesSystem
             }
         }
 
-        private void RunInteractiveLogin()
+        private void RunLogin()
         {
             Console.Write("Username: ");
             string username = Console.ReadLine();
@@ -55,11 +76,34 @@ namespace VpnNotesSystem
                 Console.WriteLine("Ошибка авторизации");
         }
 
+        private void AddNote(string[] args)
+        {
+            if (UserSession.CurrentUser == null)
+            {
+                Console.WriteLine("Сначала выполните вход (--login)");
+                return;
+            }
+
+            if (args.Length < 2)
+            {
+                Console.WriteLine("Введите текст заметки");
+                return;
+            }
+
+            string text = string.Join(" ", args, 1, args.Length - 1);
+
+            _noteService.AddNote(UserSession.CurrentUser, text);
+
+            Console.WriteLine("Заметка добавлена");
+        }
+
         private void ShowHelp()
         {
-            Console.WriteLine("Доступные команды:");
-            Console.WriteLine("--login   Вход в систему");
-            Console.WriteLine("--help    Помощь");
+            Console.WriteLine("Команды:");
+            Console.WriteLine("--login");
+            Console.WriteLine("--addNewNote <text>");
+            Console.WriteLine("--help");
+            Console.WriteLine("--exit");
         }
     }
 }

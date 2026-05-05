@@ -8,8 +8,16 @@ namespace VpnNotesSystem
 {
     internal class NoteService
     {
-        public void AddNote(string text)
+        private readonly INoteRepository _noteRepository;
+
+        public NoteService(INoteRepository noteRepository)
         {
+            _noteRepository = noteRepository;
+        }
+
+        public void AddNote(string username, string text)
+        {
+            _noteRepository.AddNote(username, text);
         }
     }
 }

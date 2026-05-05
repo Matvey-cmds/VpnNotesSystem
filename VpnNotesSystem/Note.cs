@@ -8,7 +8,12 @@ namespace VpnNotesSystem
 {
     internal class Note
     {
+        public string Username { get; set; }
         public string Text { get; set; }
         public DateTime CreatedAt { get; set; }
+    }
+    public interface INoteRepository
+    {
+        void AddNote(string username, string text);
     }
 }

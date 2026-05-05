@@ -13,10 +13,14 @@ namespace VpnNotesSystem
             string connectionString = "Host=localhost;Port=5432;Username=postgres;Password=111;Database=postgres";
 
             IUserRepository userRepo = new PostgresUserRepository(connectionString);
-            AuthService authService = new AuthService(userRepo);
-            CommandHandler handler = new CommandHandler(authService);
+            INoteRepository noteRepo = new PostgresNoteRepository(connectionString);
 
-            handler.Handle(args);
+            AuthService authService = new AuthService(userRepo);
+            NoteService noteService = new NoteService(noteRepo);
+
+            CommandHandler handler = new CommandHandler(authService, noteService);
+
+            handler.Run();
         }
     }
 }

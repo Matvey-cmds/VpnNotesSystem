@@ -22,7 +22,13 @@ namespace VpnNotesSystem
             if (user == null)
                 return false;
 
-            return user.Password == password;
+            if (user.Password == password)
+            {
+                UserSession.CurrentUser = username;
+                return true;
+            }
+
+            return false;
         }
     }
 }
