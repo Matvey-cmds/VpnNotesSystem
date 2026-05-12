@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VpnNotesSystem
 {
-    internal class AuthService
+    public class AuthService
     {
         private readonly IUserRepository _userRepository;
 

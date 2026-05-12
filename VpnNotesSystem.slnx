@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="VpnNotesSystem.Tests/VpnNotesSystem.Tests.csproj" Id="35ef970c-efaf-4c44-849a-8c5584d2ef38" />
   <Project Path="VpnNotesSystem/VpnNotesSystem.csproj" Id="1ed045c8-1d2a-4941-adea-e501d9f7a6a5" />
 </Solution>

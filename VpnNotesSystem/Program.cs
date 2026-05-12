@@ -19,7 +19,9 @@ namespace VpnNotesSystem
             UserService userService = new UserService(userRepo);
             ILogRepository logRepo =new PostgresLogRepository(connectionString);
             LogService logService =new LogService(logRepo);
-            CommandHandler handler =new CommandHandler(authService,noteService,userService,logService);
+            IUpdateRepository updateRepo = new PostgresUpdateRepository(connectionString);
+            UpdateService updateService = new UpdateService(updateRepo);
+            CommandHandler handler =new CommandHandler(authService,noteService,userService,logService, updateService);
             handler.Run();
         }
     }

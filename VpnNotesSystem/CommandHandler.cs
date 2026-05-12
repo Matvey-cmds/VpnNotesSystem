@@ -12,16 +12,19 @@ namespace VpnNotesSystem
         private readonly NoteService _noteService;
         private readonly UserService _userService;
         private readonly LogService _logService;
+        private readonly UpdateService _updateService;
         public CommandHandler(
             AuthService authService,
             NoteService noteService,
             UserService userService,
-            LogService logService)
+            LogService logService,
+            UpdateService updateService)
         {
             _authService = authService;
             _noteService = noteService;
             _userService = userService;
             _logService = logService;
+            _updateService = updateService;
         }
 
         public void Run()
@@ -220,6 +223,22 @@ namespace VpnNotesSystem
                         log.CreatedAt);
                 }
             }
+            else if (args[0] == "--checkUpdates")
+            {
+                bool hasUpdate =
+                    _updateService.HasUpdate();
+
+                if (hasUpdate)
+                {
+                    Console.WriteLine(
+                        "Доступно обновление");
+                }
+                else
+                {
+                    Console.WriteLine(
+                        "Установлена актуальная версия");
+                }
+            }
             else
             {
                 Console.WriteLine("Неизвестная команда");
@@ -287,6 +306,8 @@ namespace VpnNotesSystem
 
             Console.WriteLine(
                 "--exit : выход из программы");
+            Console.WriteLine(
+                "--checkUpdates : проверка обновлений");
 
             if (UserSession.CurrentUser != null)
             {

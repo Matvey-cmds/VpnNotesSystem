@@ -102,6 +102,7 @@
     <Compile Include="OnlineManager.cs" />
     <Compile Include="PostgresLogRepository.cs" />
     <Compile Include="PostgresNoteRepository.cs" />
+    <Compile Include="PostgresUpdateRepository.cs" />
     <Compile Include="PostgresUserRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

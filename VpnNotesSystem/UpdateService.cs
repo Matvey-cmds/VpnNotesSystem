@@ -8,8 +8,31 @@ namespace VpnNotesSystem
 {
     internal class UpdateService
     {
-        public async Task CheckForUpdates()
+        private readonly IUpdateRepository _updateRepository;
+
+        private readonly string _currentVersion = "1.1";
+
+        public UpdateService(
+            IUpdateRepository updateRepository)
         {
+            _updateRepository = updateRepository;
         }
+
+        public bool HasUpdate()
+        {
+            string latestVersion =
+                _updateRepository.GetLatestVersion();
+
+            return latestVersion != _currentVersion;
+        }
+
+        public string GetCurrentVersion()
+        {
+            return _currentVersion;
+        }
+    }
+    public interface IUpdateRepository
+    {
+        string GetLatestVersion();
     }
 }
