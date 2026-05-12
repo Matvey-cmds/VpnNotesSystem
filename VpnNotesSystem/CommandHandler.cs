@@ -13,12 +13,7 @@ namespace VpnNotesSystem
         private readonly UserService _userService;
         private readonly LogService _logService;
         private readonly UpdateService _updateService;
-        public CommandHandler(
-            AuthService authService,
-            NoteService noteService,
-            UserService userService,
-            LogService logService,
-            UpdateService updateService)
+        public CommandHandler(AuthService authService,NoteService noteService,UserService userService,LogService logService,UpdateService updateService)
         {
             _authService = authService;
             _noteService = noteService;
