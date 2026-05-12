@@ -95,8 +95,12 @@
     <Compile Include="AppVersion.cs" />
     <Compile Include="AuthService.cs" />
     <Compile Include="CommandHandler.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="LogService.cs" />
     <Compile Include="Note.cs" />
     <Compile Include="NoteService.cs" />
+    <Compile Include="OnlineManager.cs" />
+    <Compile Include="PostgresLogRepository.cs" />
     <Compile Include="PostgresNoteRepository.cs" />
     <Compile Include="PostgresUserRepository.cs" />
     <Compile Include="Program.cs" />

@@ -32,8 +32,13 @@ namespace VpnNotesSystem
             {
                 UserSession.CurrentUser = username;
                 UserSession.CurrentRole = user.Role;
+                if (!OnlineManager.OnlineUsers.Contains(username))
+                {
+                    OnlineManager.OnlineUsers.Add(username);
+                }
                 return true;
             }
+
 
             return false;
         }

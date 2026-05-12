@@ -11,11 +11,17 @@ namespace VpnNotesSystem
         private readonly AuthService _authService;
         private readonly NoteService _noteService;
         private readonly UserService _userService;
-        public CommandHandler(AuthService authService, NoteService noteService, UserService userService)
+        private readonly LogService _logService;
+        public CommandHandler(
+            AuthService authService,
+            NoteService noteService,
+            UserService userService,
+            LogService logService)
         {
             _authService = authService;
             _noteService = noteService;
             _userService = userService;
+            _logService = logService;
         }
 
         public void Run()
@@ -71,7 +77,7 @@ namespace VpnNotesSystem
                     Console.WriteLine("Нет прав");
                     return;
                 }
-
+                _logService.AddLog(UserSession.CurrentUser,"Viewed all notes");
                 var notes = _noteService.GetAllNotes();
 
                 if (notes.Count == 0)
@@ -134,7 +140,85 @@ namespace VpnNotesSystem
 
                 _userService.BlockUser(username);
 
+                _logService.AddLog(
+                    UserSession.CurrentUser,
+                    "Blocked user: " + username);
+
                 Console.WriteLine("Пользователь заблокирован");
+            }
+            else if (args[0] == "--logout")
+            {
+                if (UserSession.CurrentUser == null)
+                {
+                    Console.WriteLine("Вы не вошли");
+                    return;
+                }
+                _logService.AddLog(
+                    UserSession.CurrentUser,
+                    "User logged out");
+                OnlineManager.OnlineUsers.Remove(
+                    UserSession.CurrentUser);
+
+                Console.WriteLine("Выход выполнен");
+
+                UserSession.CurrentUser = null;
+                UserSession.CurrentRole = null;
+            }
+            else if (args[0] == "--onlineUsers")
+            {
+                if (UserSession.CurrentRole != "admin")
+                {
+                    Console.WriteLine("Нет прав");
+                    return;
+                }
+
+                if (OnlineManager.OnlineUsers.Count == 0)
+                {
+                    Console.WriteLine("Нет пользователей онлайн");
+                    return;
+                }
+
+                foreach (var user in OnlineManager.OnlineUsers)
+                {
+                    Console.WriteLine(user);
+                }
+            }
+            else if (args[0] == "--watchersCount")
+            {
+                if (UserSession.CurrentRole != "admin")
+                {
+                    Console.WriteLine("Нет прав");
+                    return;
+                }
+
+                Console.WriteLine(
+                    "Активных подключений: " +
+                    OnlineManager.OnlineUsers.Count);
+            }
+            else if (args[0] == "--logs")
+            {
+                if (UserSession.CurrentRole != "admin")
+                {
+                    Console.WriteLine("Нет прав");
+                    return;
+                }
+
+                var logs = _logService.GetLogs();
+
+                if (logs.Count == 0)
+                {
+                    Console.WriteLine("Логи отсутствуют");
+                    return;
+                }
+
+                foreach (var log in logs)
+                {
+                    Console.WriteLine(
+                        log.Id + " | " +
+                        log.Username + " | " +
+                        log.Action + " | " +
+                        log.CreatedAt);
+                }
             }
             else
             {
@@ -153,9 +237,17 @@ namespace VpnNotesSystem
             bool result = _authService.Login(username, password);
 
             if (result)
+            {
                 Console.WriteLine("Успешный вход");
+
+                _logService.AddLog(
+                    username,
+                    "User logged in");
+            }
             else
+            {
                 Console.WriteLine("Ошибка авторизации");
+            }
         }
 
         private void AddNote(string[] args)
@@ -176,16 +268,55 @@ namespace VpnNotesSystem
 
             _noteService.AddNote(UserSession.CurrentUser, text);
 
-            Console.WriteLine("Заметка добавлена");
+            _logService.AddLog(
+                UserSession.CurrentUser,
+                "Added new note");
+
+            Console.WriteLine("Заметка добавлена"); ;
         }
 
         private void ShowHelp()
         {
-            Console.WriteLine("Команды:");
-            Console.WriteLine("--login");
-            Console.WriteLine("--addNewNote <text>");
-            Console.WriteLine("--help");
-            Console.WriteLine("--exit");
+            Console.WriteLine("Доступные команды:");
+
+            Console.WriteLine(
+                "--login : вход в систему");
+
+            Console.WriteLine(
+                "--help : список команд");
+
+            Console.WriteLine(
+                "--exit : выход из программы");
+
+            if (UserSession.CurrentUser != null)
+            {
+                Console.WriteLine(
+                    "--logout : выход из аккаунта");
+
+                Console.WriteLine(
+                    "--addNewNote <text> : добавить заметку");
+
+                Console.WriteLine(
+                    "--myNotes : мои заметки");
+            }
+
+            if (UserSession.CurrentRole == "admin")
+            {
+                Console.WriteLine(
+                    "--allNotes : все заметки пользователей");
+
+                Console.WriteLine(
+                    "--blockUser <username> : блокировка пользователя");
+
+                Console.WriteLine(
+                    "--onlineUsers : список пользователей онлайн");
+
+                Console.WriteLine(
+                    "--watchersCount : количество активных подключений");
+
+                Console.WriteLine(
+                    "--logs : просмотр логов системы");
+            }
         }
     }
 }
