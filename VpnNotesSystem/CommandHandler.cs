@@ -234,6 +234,40 @@ namespace VpnNotesSystem
                         "Установлена актуальная версия");
                 }
             }
+            else if (args[0] == "--editNote")
+            {
+                if (UserSession.CurrentUser == null)
+                {
+                    Console.WriteLine("Сначала выполните вход");
+                    return;
+                }
+
+                if (args.Length < 3)
+                {
+                    Console.WriteLine(
+                        "Использование: --editNote <id> <text>");
+                    return;
+                }
+
+                int noteId;
+
+                if (!int.TryParse(args[1], out noteId))
+                {
+                    Console.WriteLine("Неверный id");
+                    return;
+                }
+
+                string newText =
+                    string.Join(" ", args, 2, args.Length - 2);
+
+                _noteService.UpdateNote(noteId, newText);
+
+                _logService.AddLog(
+                    UserSession.CurrentUser,
+                    "Updated note id=" + noteId);
+
+                Console.WriteLine("Заметка обновлена");
+            }
             else
             {
                 Console.WriteLine("Неизвестная команда");
@@ -314,6 +348,8 @@ namespace VpnNotesSystem
 
                 Console.WriteLine(
                     "--myNotes : мои заметки");
+                Console.WriteLine(
+                    "--editNote <id> <text> : редактировать заметку");
             }
 
             if (UserSession.CurrentRole == "admin")

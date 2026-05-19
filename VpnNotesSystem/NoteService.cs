@@ -27,5 +27,9 @@ namespace VpnNotesSystem
         {
             return _noteRepository.GetAllNotes();
         }
+        public void UpdateNote(int id, string newText)
+        {
+            _noteRepository.UpdateNote(id, newText);
+        }
     }
 }

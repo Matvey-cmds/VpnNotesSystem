@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VpnNotesSystem
 {
-    internal class UpdateService
+    public class UpdateService
     {
         private readonly IUpdateRepository _updateRepository;
 

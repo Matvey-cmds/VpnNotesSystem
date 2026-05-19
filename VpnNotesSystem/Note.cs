@@ -17,5 +17,6 @@ namespace VpnNotesSystem
         void AddNote(string username, string text);
         List<Note> GetUserNotes(string username);
         List<Note> GetAllNotes();
+        void UpdateNote(int id, string newText);
     }
 }

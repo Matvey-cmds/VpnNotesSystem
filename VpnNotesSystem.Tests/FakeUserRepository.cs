@@ -6,15 +6,19 @@ namespace VpnNotesSystem.Tests
     {
         public User GetByUsername(string username)
         {
-            return new User
+            if (username == "admin")
             {
-                Username = "admin",
-                Password = "1234",
-                Role = "admin",
-                IsBlocked = false
-            };
-        }
+                return new User
+                {
+                    Username = "admin",
+                    Password = "1234",
+                    Role = "admin",
+                    IsBlocked = false
+                };
+            }
 
+            return null;
+        }
         public void BlockUser(string username)
         {
 

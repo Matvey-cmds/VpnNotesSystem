@@ -87,7 +87,26 @@ namespace VpnNotesSystem
             }
 
             return notes;
-        } 
+        }
+        public void UpdateNote(int id, string newText)
+        {
+            using (var conn =
+                new NpgsqlConnection(_connectionString))
+            {
+                conn.Open();
+
+                using (var cmd =
+                    new NpgsqlCommand(
+                        "SELECT update_note(@id, @text)",
+                        conn))
+                {
+                    cmd.Parameters.AddWithValue("id", id);
+                    cmd.Parameters.AddWithValue("text", newText);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 
     }
 }

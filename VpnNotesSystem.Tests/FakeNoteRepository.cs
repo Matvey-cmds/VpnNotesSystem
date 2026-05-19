@@ -6,6 +6,7 @@ namespace VpnNotesSystem.Tests
     public class FakeNoteRepository : INoteRepository
     {
         public bool AddCalled = false;
+        public bool UpdateCalled = false;
 
         public void AddNote(string username, string text)
         {
@@ -16,7 +17,10 @@ namespace VpnNotesSystem.Tests
         {
             return new List<Note>();
         }
-
+        public void UpdateNote(int id, string newText)
+        {
+            UpdateCalled = true;
+        }
         public List<Note> GetUserNotes(string username)
         {
             return new List<Note>
